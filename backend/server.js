@@ -25,16 +25,12 @@ const pool = mysql.createPool({
 
 app.get("/projects", (req, res) => {
   const sql = `
-        SELECT 
-            projects.title, 
-            projects.description, 
-            statuses.name AS status, 
-            GROUP_CONCAT(technologies.name SEPARATOR ', ') AS technology
-        FROM projects
-        JOIN statuses ON projects.status_id = statuses.status_id
-        JOIN project_technologies ON projects.project_id = project_technologies.project_id
-        JOIN technologies ON project_technologies.technology_id = technologies.technology_id
-        GROUP BY projects.title, projects.description, statuses.name
+        select title, description, statuses.name as status, GROUP_CONCAT(technologies.name SEPARATOR ', ') as technology
+from projects
+left join statuses on projects.status_id = statuses.status_id
+left join project_technologies on projects.project_id = project_technologies.project_id
+left join technologies on project_technologies.technology_id = technologies.technology_id
+group by projects.title, projects.description
     `;
 
   pool.query(sql, (err, results) => {
