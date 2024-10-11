@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
+import ProjectsView from "./components/view/ProjectsView";
 
 function App() {
   return (
@@ -7,7 +8,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<h1>Home</h1>} />
-          <Route path="/projects" element={<h1>Projects</h1>} />
+          <Route path="/projects" element={<ProjectsView />} />
         </Routes>
       </Layout>
     </BrowserRouter>

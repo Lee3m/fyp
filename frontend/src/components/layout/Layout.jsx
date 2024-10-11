@@ -5,7 +5,7 @@ function Layout({ children }) {
   return (
     <>
       <NavigationBar />
-      <main>{children}</main>;
+      <main className="h-screen h-full">{children}</main>
     </>
   );
 }
