@@ -1,7 +1,13 @@
 import React from "react";
+import NavigationBar from "../ui/NavigationBar";
 
 function Layout({ children }) {
-  return <main>{children}</main>;
+  return (
+    <>
+      <NavigationBar />
+      <main>{children}</main>;
+    </>
+  );
 }
 
 export default Layout;

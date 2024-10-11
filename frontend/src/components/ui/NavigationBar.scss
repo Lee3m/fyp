@@ -1,0 +1,7 @@
+.navbar {
+  @apply bg-black flex h-12 justify-end items-center p-10;
+}
+
+.navItem {
+  @apply text-white m-3 text-2xl;
+}

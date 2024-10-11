@@ -1,10 +1,13 @@
 import { NavLink } from "react-router-dom";
-
+import "./NavigationBar.scss";
 function NavigationBar() {
   return (
-    <nav>
+    <nav className="navbar">
       <div className="navItem">
-        <Navlink to="/">Home</Navlink>
+        <NavLink to="/">Home</NavLink>
+      </div>
+      <div className="navItem">
+        <NavLink to="/projects">Projects</NavLink>
       </div>
     </nav>
   );
