@@ -45,17 +45,9 @@ app.get("/projects", (req, res) => {
 
   pool.query(sql, (err, results) => {
     if (err) {
-      console.error("Error fetching projects: ", err); // Log the error for debugging
-      return res.status(500).send({
-        message: "An error occurred while fetching projects",
-        error: err,
-      });
+      return res.status(500).json({ message: err.message });
     }
-
-    res.status(200).json({
-      message: "Projects fetched successfully",
-      data: results,
-    });
+    return res.json(results);
   });
 });
 
