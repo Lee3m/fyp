@@ -1,5 +1,6 @@
 import React from "react";
-import NavigationBar from "../ui/NavigationBar";
+import NavigationBar from "./NavigationBar";
+import Footer from "./Footer";
 import "./Layout.scss"; // Import the stylesheet
 
 function Layout({ children }) {
@@ -7,6 +8,7 @@ function Layout({ children }) {
     <>
       <NavigationBar />
       <main className="main-content">{children}</main>
+      <Footer />
     </>
   );
 }
