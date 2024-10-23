@@ -12,12 +12,12 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+const db = await connectToDatabase();
 
 // Configure middleware
 // Controllers
 
 const projectsController = async (req, res) => {
-  const db = await connectToDatabase();
   const id = req.params.id;
   const table = "projects";
   const idField = "project_id";
