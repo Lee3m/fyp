@@ -1,6 +1,6 @@
 // Imports
 import express from "express";
-import connectToDatabase from "./database.js";
+import database from "./database.js";
 import cors from "cors";
 // Configure express app
 const app = express();
@@ -12,7 +12,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-const db = await connectToDatabase();
 
 // Configure middleware
 // Controllers
@@ -46,7 +45,7 @@ const projectsController = async (req, res) => {
   let message = "";
   let result = null;
   try {
-    [result] = await db.query(sql);
+    [result] = await database.query(sql);
     if (result.length === 0) {
       message = "No projects found";
     } else {
