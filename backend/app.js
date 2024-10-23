@@ -1,8 +1,18 @@
 // Imports
 import express from "express";
 import connectToDatabase from "./database.js";
+import cors from "cors";
 // Configure express app
 const app = express();
+
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: false,
+};
+
+app.use(cors(corsOptions));
+
 // Configure middleware
 // Controllers
 

@@ -17,7 +17,7 @@ const ProjectsView = () => {
   // Handlers --------------------------------
   const fetchProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/projects");
+      const response = await axios.get("http://localhost:5000/api/projects");
       if (Array.isArray(response.data)) {
         setProjects(response.data);
       } else {
