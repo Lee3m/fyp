@@ -11,16 +11,12 @@ const dbConfig = {
 
 let database = null;
 
-async function connectToDatabase() {
-  try {
-    database = await mysql.createConnection(dbConfig);
-    console.log("Database connection successful!");
-  } catch (err) {
-    console.error("Error connecting to the database:", err.message);
-    process.exit();
-  }
-
-  return database;
+try {
+  database = await mysql.createConnection(dbConfig);
+  console.log("Database connection successful!");
+} catch (err) {
+  console.error("Error connecting to the database:", err.message);
+  process.exit();
 }
 
-export default connectToDatabase;
+export default database;
