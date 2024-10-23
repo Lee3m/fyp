@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ProjectList from "../entity/ProjectList";
-import axios from "axios";
 import Pagination from "../ui/Pagination";
+import API from "../API/API";
 
 const ProjectsView = () => {
   // Initialization --------------------------
+
+  const projectsEndpoint = "/projects";
   // State -----------------------------------
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,20 +17,18 @@ const ProjectsView = () => {
   const currentPost = projects.slice(firstPostIndex, lastPostIndex);
 
   // Handlers --------------------------------
-  const fetchProjects = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/projects");
-      if (Array.isArray(response.data)) {
-        setProjects(response.data);
-      } else {
-        console.error("API response data is not an array");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
+    const fetchProjects = async () => {
+      const endpoint = "projects";
+      const { isSuccess, message, result } = await API.get(projectsEndpoint);
+      if (isSuccess) {
+        setProjects(result);
+      } else {
+        console.error(message);
+      }
+    };
+
     fetchProjects();
   }, []);
 
