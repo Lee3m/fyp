@@ -1,44 +1,61 @@
 // Imports
 import express from "express";
-import database from "./database.js";
+import connectToDatabase from "./database.js";
 // Configure express app
 const app = express();
 // Configure middleware
 // Controllers
+
 const projectsController = async (req, res) => {
+  const db = await connectToDatabase();
   const id = req.params.id;
   const table = "projects";
   const idField = "project_id";
-  const fields = ["title", "description", "aim", "status_id"];
+  const fields = [
+    "projects.title",
+    "projects.description",
+    "projects.status_id",
+    "projects.aim",
+  ];
 
   const extendedTable = `${table} LEFT JOIN statuses ON ${table}.status_id = statuses.status_id
-        LEFT JOIN project_technologies ON ${table}.project_id = project_technologies.project_id
-        LEFT JOIN technologies ON project_technologies.technology_id = technologies.technology_id`;
+      LEFT JOIN project_technologies ON ${table}.project_id = project_technologies.project_id
+      LEFT JOIN technologies ON project_technologies.technology_id = technologies.technology_id`;
   const extendedFields = [
-    `${fields} , statuses.name AS status, GROUP_CONCAT(technologies.name SEPARATOR ', ') AS technology`,
+    `${fields.join(
+      ", "
+    )}, statuses.name AS status, GROUP_CONCAT(technologies.name SEPARATOR ', ') AS technology`,
   ];
-  let sql = `SELECT ${extendedFields} FROM ${extendedTable} GROUP BY ${fields}`;
+  let sql = `SELECT ${extendedFields.join(", ")} FROM ${extendedTable}`;
   if (id) {
-    sql += ` WHERE ${idField} = ${id}`;
+    sql += ` WHERE ${table}.${idField} = ${id}`;
   }
-  let isSuccsess = false;
+  sql += ` GROUP BY ${fields.join(", ")}`;
+
+  let isSuccess = false;
   let message = "";
   let result = null;
   try {
-    [result] = await database.query(sql);
+    [result] = await db.query(sql);
     if (result.length === 0) {
       message = "No projects found";
     } else {
-      isSuccsess = true;
+      isSuccess = true;
       message = "Projects found";
     }
-    isSuccsess ? res.status(200).json(result) : res.status(404).json(message);
+    isSuccess
+      ? res.status(200).json(result)
+      : res.status(404).json({ message });
   } catch (err) {
     message = `Failed to query projects: ${err.message}`;
+    res.status(500).json({ message });
   }
 };
+
 // Endpoints
 app.get("/api/projects", projectsController);
+app.get("/api/projects/:id", projectsController);
+
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
